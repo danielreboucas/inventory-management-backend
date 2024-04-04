@@ -24,8 +24,10 @@ export class AuthService {
           lastName: dto.lastName,
         },
       });
+      delete user.passwordHash;
+      const token = await this.signToken(user.id, user.email);
 
-      return this.signToken(user.id, user.email);
+      return { access_token: token, user: user };
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
         if (error.code === 'P2002') {
@@ -47,14 +49,13 @@ export class AuthService {
     const passwordMatches = await argon.verify(user.passwordHash, dto.password);
 
     if (!passwordMatches) throw new ForbiddenException('Incorrect Credentials');
+    delete user.passwordHash;
+    const token = await this.signToken(user.id, user.email);
 
-    return this.signToken(user.id, user.email);
+    return { access_token: token, user: user };
   }
 
-  async signToken(
-    userId: number,
-    email: string,
-  ): Promise<{ access_token: string }> {
+  async signToken(userId: number, email: string): Promise<string> {
     const payload = {
       sub: userId,
       email,
@@ -65,8 +66,6 @@ export class AuthService {
       secret: this.config.get('JWT_SECRET'),
     });
 
-    return {
-      access_token: token,
-    };
+    return token;
   }
 }
