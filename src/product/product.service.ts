@@ -83,15 +83,22 @@ export class ProductService {
     }
   }
 
-  async deleteProduct(id: number): Promise<Product> {
+  async deleteProducts(ids: string[]): Promise<number> {
+    const convertedIds: number[] = [];
+    ids.map((id) => {
+      convertedIds.push(Number(id));
+    });
+
     try {
-      const product = await this.prisma.product.delete({
+      const deletedProductCount = await this.prisma.product.deleteMany({
         where: {
-          id: Number(id),
+          id: {
+            in: convertedIds,
+          },
         },
       });
 
-      return product;
+      return deletedProductCount.count;
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
         throw error;

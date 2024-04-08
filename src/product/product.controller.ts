@@ -34,8 +34,8 @@ export class ProductController {
     return this.productService.editProduct(id, dto);
   }
 
-  @Delete(':id')
-  deleteProduct(@Param('id') id: number) {
-    return this.productService.deleteProduct(id);
+  @Delete()
+  deleteProducts(@Body() data: { ids: string[] }) {
+    return this.productService.deleteProducts(data.ids);
   }
 }
