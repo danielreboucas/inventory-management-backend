@@ -2,12 +2,13 @@ import { ForbiddenException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { ProductDto } from './dto';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
+import { Product } from '@prisma/client';
 
 @Injectable({})
 export class ProductService {
   constructor(private prisma: PrismaService) {}
 
-  async createProduct(dto: ProductDto) {
+  async createProduct(dto: ProductDto): Promise<Product> {
     try {
       const product = await this.prisma.product.create({
         data: {
@@ -32,7 +33,7 @@ export class ProductService {
     }
   }
 
-  async getProduct(id: number) {
+  async getProduct(id: number): Promise<Product> {
     try {
       const product = await this.prisma.product.findUnique({
         where: {
@@ -48,7 +49,7 @@ export class ProductService {
     }
   }
 
-  async getAllProducts() {
+  async getAllProducts(): Promise<{ data: Product[]; total: number }> {
     try {
       const products = await this.prisma.product.findMany();
       return { data: products, total: products.length };
@@ -59,7 +60,7 @@ export class ProductService {
     }
   }
 
-  async editProduct(id: number, dto: ProductDto) {
+  async editProduct(id: number, dto: ProductDto): Promise<Product> {
     try {
       const product = await this.prisma.product.update({
         where: {
@@ -82,7 +83,7 @@ export class ProductService {
     }
   }
 
-  async deleteProcuct(id: number) {
+  async deleteProduct(id: number): Promise<Product> {
     try {
       const product = await this.prisma.product.delete({
         where: {
