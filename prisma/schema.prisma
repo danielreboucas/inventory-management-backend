@@ -33,7 +33,7 @@ model Product {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  name         String
+  name         String   @unique
   costPrice    Decimal?
   sellingPrice Decimal?
   quantity     Int
@@ -41,5 +41,45 @@ model Product {
   userId Int
   user   User @relation(fields: [userId], references: [id])
 
+  supplier   Supplier[]
+  sale   Sale[]
+  Order   Order[]
+
   @@map("products")
+}
+
+model Supplier {
+  id Int @id @default(autoincrement())
+
+  name        String @unique
+  contactInfo String
+
+  products Product[]
+  orders   Order[]
+}
+
+model Sale {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name            String    @unique
+  value           Decimal?
+  discountedValue Decimal?
+  date            DateTime
+  products        Product[]
+  soldTo          String
+}
+
+model Order {
+  id Int @id @default(autoincrement())
+
+  name            String    @unique
+  value           Decimal?
+  discountedValue Decimal?
+  date            DateTime
+  products        Product[]
+
+  supplierId Int
+  supplier   Supplier @relation(fields: [supplierId], references: [id])
 }

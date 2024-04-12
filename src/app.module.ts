@@ -6,6 +6,7 @@ import { PrismaModule } from './prisma/prisma.module';
 import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './auth/guard/jwt.guard';
+import { SupplierModule } from './supplier/supplier.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { JwtAuthGuard } from './auth/guard/jwt.guard';
     UserModule,
     ProductModule,
     PrismaModule,
+    SupplierModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),
