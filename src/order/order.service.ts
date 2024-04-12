@@ -1,63 +1,65 @@
 import {
+  BadRequestException,
   ForbiddenException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
-import { SupplierDto } from './dto';
-import { Supplier } from '@prisma/client';
+import { OrderDto } from './dto';
+import { Order } from '@prisma/client';
 
 @Injectable({})
-export class SupplierService {
+export class OrderService {
   constructor(private prisma: PrismaService) {}
 
-  async createSupplier(dto: SupplierDto): Promise<Supplier> {
+  async createOrder(dto: OrderDto): Promise<Order> {
     try {
-      const supplier = await this.prisma.supplier.create({
+      const order = await this.prisma.order.create({
         data: {
           name: dto.name,
-          contactInfo: dto.contactInfo,
+          value: Number(dto.value),
+          discountedValue: Number(dto.discountedValue),
+          date: dto.date,
           products: {
             connect: JSON.parse(JSON.stringify(dto.products)).map((product) => {
               return { name: product.name };
             }),
           },
-          orders: {
-            connect: JSON.parse(JSON.stringify(dto.orders)).map((order) => {
-              return {
-                name: order.name,
-              };
-            }),
-          },
+          contactId: dto.contactId,
+          supplierId: dto.supplierId,
         },
       });
 
-      return supplier;
+      return order;
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
+        if (error.code === 'P2002') {
+          throw new ForbiddenException('Order already exists');
+        }
+        if (error.code === 'P2003') {
+          throw new BadRequestException('Contact or Supplier does not exist');
+        }
         if (error.code === 'P2025' || error.code === 'P2018') {
           throw new NotFoundException(
-            'Product or order does not exist. Please create it before linking to the Supplier',
+            'Product does not exist. Please create it before linking to the Order',
           );
         }
-        if (error.code === 'P2002') {
-          throw new ForbiddenException('Supplier already exists');
-        }
+
         throw error;
       }
     }
   }
 
-  async getSupplier(id: number): Promise<Supplier> {
+  async getOrder(id: number): Promise<Order> {
     try {
-      const supplier = await this.prisma.supplier.findUnique({
+      const order = await this.prisma.order.findUnique({
         where: {
           id: Number(id),
         },
       });
 
-      return supplier;
+      return order;
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
         throw error;
@@ -65,10 +67,10 @@ export class SupplierService {
     }
   }
 
-  async getAllSuppliers(): Promise<{ data: Supplier[]; total: number }> {
+  async getAllOrders(): Promise<{ data: Order[]; total: number }> {
     try {
-      const suppliers = await this.prisma.supplier.findMany();
-      return { data: suppliers, total: suppliers.length };
+      const orders = await this.prisma.order.findMany();
+      return { data: orders, total: orders.length };
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
         throw error;
@@ -76,54 +78,54 @@ export class SupplierService {
     }
   }
 
-  async editSupplier(id: number, dto: SupplierDto): Promise<Supplier> {
+  async editOrder(id: number, dto: OrderDto): Promise<Order> {
     try {
-      const supplier = await this.prisma.supplier.update({
+      const order = await this.prisma.order.update({
         where: {
           id: Number(id),
         },
         data: {
           name: dto.name,
-          contactInfo: dto.contactInfo,
+          value: dto.value,
+          discountedValue: dto.discountedValue,
+          date: dto.date,
           products: {
             connect: JSON.parse(JSON.stringify(dto.products)).map((product) => {
               return { name: product.name };
             }),
           },
-          orders: {
-            connect: JSON.parse(JSON.stringify(dto.orders)).map((order) => {
-              return {
-                name: order.name,
-              };
-            }),
-          },
+          contactId: dto.contactId,
+          supplierId: dto.supplierId,
         },
       });
 
-      return supplier;
+      return order;
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
+        if (error.code === 'P2002') {
+          throw new ForbiddenException('Order already exists');
+        }
+        if (error.code === 'P2003') {
+          throw new BadRequestException('Contact or Supplier does not exist');
+        }
         if (error.code === 'P2025' || error.code === 'P2018') {
           throw new NotFoundException(
-            'Product or order does not exist. Please create it before linking to the Supplier',
+            'Product does not exist. Please create it before linking to the Order',
           );
-        }
-        if (error.code === 'P2002') {
-          throw new ForbiddenException('Supplier already exists');
         }
         throw error;
       }
     }
   }
 
-  async deleteSuppliers(ids: string[]): Promise<number> {
+  async deleteOrders(ids: string[]): Promise<number> {
     const convertedIds: number[] = [];
     ids.map((id) => {
       convertedIds.push(Number(id));
     });
 
     try {
-      const deletedSuppliersCount = await this.prisma.supplier.deleteMany({
+      const deletedOrdersCount = await this.prisma.order.deleteMany({
         where: {
           id: {
             in: convertedIds,
@@ -131,7 +133,7 @@ export class SupplierService {
         },
       });
 
-      return deletedSuppliersCount.count;
+      return deletedOrdersCount.count;
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
         throw error;

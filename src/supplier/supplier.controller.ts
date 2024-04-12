@@ -9,9 +9,7 @@ import {
 } from '@nestjs/common';
 import { SupplierService } from './supplier.service';
 import { SupplierDto } from './dto';
-import { IsPublic } from 'src/auth/decorator';
 
-@IsPublic()
 @Controller('supplier')
 export class SupplierController {
   constructor(private supplierService: SupplierService) {}

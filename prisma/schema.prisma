@@ -41,9 +41,9 @@ model Product {
   userId Int
   user   User @relation(fields: [userId], references: [id])
 
-  supplier   Supplier[]
-  sale   Sale[]
-  Order   Order[]
+  supplier Supplier[]
+  sale     Sale[]
+  order    Order[]
 
   @@map("products")
 }
@@ -80,6 +80,16 @@ model Order {
   date            DateTime
   products        Product[]
 
+  contactId Int
+  contact   Contact @relation(fields: [contactId], references: [id])
+
   supplierId Int
   supplier   Supplier @relation(fields: [supplierId], references: [id])
+}
+
+model Contact {
+  id          Int     @id @default(autoincrement())
+  name        String
+  contactInfo String
+  order       Order[]
 }

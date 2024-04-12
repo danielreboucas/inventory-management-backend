@@ -2,6 +2,7 @@ import {
   IsDateString,
   IsDecimal,
   IsNotEmpty,
+  IsNumber,
   IsOptional,
   IsString,
 } from 'class-validator';
@@ -14,11 +15,11 @@ export class OrderDto {
 
   @IsNotEmpty()
   @IsDecimal()
-  value: number;
+  value: string;
 
   @IsOptional()
   @IsDecimal()
-  discountedValue: number;
+  discountedValue: string;
 
   @IsNotEmpty()
   @IsDateString()
@@ -28,15 +29,10 @@ export class OrderDto {
   products: ProductDto[];
 
   @IsNotEmpty()
-  soldTo: SoldToDTO;
-}
+  @IsNumber()
+  contactId: number;
 
-export class SoldToDTO {
   @IsNotEmpty()
-  @IsString()
-  name: string;
-
-  @IsOptional()
-  @IsString()
-  contactInfo: string;
+  @IsNumber()
+  supplierId: number;
 }
