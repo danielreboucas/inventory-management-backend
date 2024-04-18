@@ -15,11 +15,11 @@ export class OrderDto {
 
   @IsNotEmpty()
   @IsDecimal()
-  value: string;
+  value: number;
 
   @IsOptional()
   @IsDecimal()
-  discountedValue: string;
+  discountedValue: number;
 
   @IsNotEmpty()
   @IsDateString()

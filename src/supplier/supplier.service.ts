@@ -7,6 +7,8 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { SupplierDto } from './dto';
 import { Supplier } from '@prisma/client';
+import { ProductDto } from 'src/product/dto';
+import { OrderDto } from 'src/order/dto';
 
 @Injectable({})
 export class SupplierService {
@@ -55,6 +57,10 @@ export class SupplierService {
         where: {
           id: Number(id),
         },
+        include: {
+          products: true,
+          orders: true,
+        },
       });
 
       return supplier;
@@ -67,7 +73,12 @@ export class SupplierService {
 
   async getAllSuppliers(): Promise<{ data: Supplier[]; total: number }> {
     try {
-      const suppliers = await this.prisma.supplier.findMany();
+      const suppliers = await this.prisma.supplier.findMany({
+        include: {
+          products: true,
+          orders: true,
+        },
+      });
       return { data: suppliers, total: suppliers.length };
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
@@ -77,6 +88,28 @@ export class SupplierService {
   }
 
   async editSupplier(id: number, dto: SupplierDto): Promise<Supplier> {
+    const formattedProducts: ProductDto[] = [];
+    const formattedOrders: OrderDto[] = [];
+    dto.products.forEach((product) => {
+      formattedProducts.push({
+        name: product.name,
+        costPrice: Number(product.costPrice),
+        sellingPrice: Number(product.sellingPrice),
+        quantity: Number(product.quantity),
+        userId: Number(product.userId),
+      });
+    });
+    dto.orders.forEach((order) => {
+      formattedOrders.push({
+        name: order.name,
+        value: order.value,
+        discountedValue: Number(order.discountedValue),
+        date: order.date,
+        products: formattedProducts,
+        contactId: Number(order.contactId),
+        supplierId: Number(order.supplierId),
+      });
+    });
     try {
       const supplier = await this.prisma.supplier.update({
         where: {
@@ -86,18 +119,13 @@ export class SupplierService {
           name: dto.name,
           contactInfo: dto.contactInfo,
           products: {
-            connect: JSON.parse(JSON.stringify(dto.products)).map((product) => {
-              return { name: product.name };
-            }),
+            set: formattedProducts,
           },
           orders: {
-            connect: JSON.parse(JSON.stringify(dto.orders)).map((order) => {
-              return {
-                name: order.name,
-              };
-            }),
+            set: JSON.parse(JSON.stringify(dto.orders)),
           },
         },
+        include: { products: true, orders: true },
       });
 
       return supplier;
