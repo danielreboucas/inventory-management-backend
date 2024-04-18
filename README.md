@@ -1,73 +1,44 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
-
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+# Inventory Management System - Backend
 
 ## Description
+The Inventory Management System Backend is the server-side component of the Inventory Management System project, built with Nest.js and Prisma. It provides RESTful APIs for managing inventory data, including Suppliers, Orders, Sales, and Products. This backend system ensures secure data storage and manipulation, allowing the [frontend](https://github.com/danielreboucas/inventory-management-frontend) application to interact seamlessly with the inventory database.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Features
+- RESTful APIs: Implements RESTful APIs for CRUD operations on inventory data entities, including Suppliers, Orders, Sales, and Products.
+- Database Integration: Utilizes Prisma ORM for database interaction, ensuring efficient and type-safe communication with the underlying database.
+- Authentication: Implements authentication and authorization mechanisms to secure API endpoints and ensure that only authenticated users can access sensitive data.
+- Validation and Error Handling: Implements robust validation and error handling mechanisms to ensure data integrity and provide meaningful error messages to clients.
+- Testing: (TODO) Implements unit tests and integration tests to ensure the reliability and correctness of the backend APIs.
 
-## Installation
+## Technologies Used
+- Nest.js: Back-end framework for building efficient, reliable, and scalable server-side applications, providing a robust foundation for developing RESTful APIs.
+- Prisma: Modern database ORM and query builder for Node.js, enabling seamless communication with various databases and ensuring type-safe database interactions.
+- TypeScript: Strict syntactical superset of JavaScript that adds optional static typing, enhancing code quality, and developer productivity.
+- Postman: API testing tool used to test the functionality and behavior of RESTful APIs, ensuring that they meet the specified requirements and behave as expected.
 
-```bash
-$ npm install
+
+
+## Getting Started:
+To set up the Inventory Management System - Backend locally, follow these steps:
+
+1. Clone the repository to your local machine:
+```
+git clone https://github.com/danielreboucas/inventory-management-backend.git
+```
+2. Navigate to the project directory:
+```
+cd inventory-management-backend
+```
+3. Install dependencies:
+```
+npm install
+```
+4. Start the development server:
+```
+npm run start:dev
 ```
 
-## Running the app
-
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
-```
-
-## Test
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+## Credits
+Daniel Rebouças
+  - [Github](https://github.com/danielreboucas)
+  - [Linkedin](https://www.linkedin.com/in/daniel-reboucas-de-queiroz/)
